@@ -5,5 +5,6 @@
 Proyecto didactico para el cuerso de 
 Desarrollo de apps
 
-## Autor 
-Enrique Ortega Celis 💀
+## Autor
+
+Hernandez Aguilar Ludwing Mauricio
