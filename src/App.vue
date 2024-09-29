@@ -3,6 +3,7 @@ import { ref } from 'vue'
 // Modelo
 const header = ref('App lista de compras')
 const newItem = ref('Nuevo Item')
+const newItemPriority = ref('low');
 const itemsList2 = ref([
   {
     'id': 101,
@@ -27,11 +28,21 @@ const itemsList2 = ref([
 
 <template>
  {{ console.log(newItem)}}
+ {{ console.log(newItemPriority) }}
   <h1>
     <i class="material-icons shopping-cart-icon">local_mall</i>
     {{ header }}
   </h1>
-  <input v-model.lazy="newItem" type="text" placeholder="Agregar articulo"> {{ newItem=='Mexico'?'ola':'a'  }}
+  <input v-model.lazy="newItem" type="text" placeholder="Agregar articulo"> {{ newItem=='Mexico'?'ola':'a'  }} 
+  <!-- Radio buttons---->
+  <label for="">
+    <input type="radio" value="high" v-model="newItemPriority">Alto
+    </label>
+    <label for="">
+      <input type="radio" value="low" v-model="newItemPriority">Bajo
+      {{ newItemPriority == "high" ? "🔥":"🧊" }}
+      </label>
+
   <ul>
     <li v-for="({id, name}, i) in itemsList2" :key="id">{{i + 1}} {{name}}</li>
   </ul>
