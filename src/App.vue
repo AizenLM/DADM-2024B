@@ -1,71 +1,76 @@
-  <script setup>
-  import { ref } from 'vue'
-  // Modelo
-  const header = ref('App lista de compras')
-  const newItem = ref('Nuevo Item')
-  const newItemPriority = ref('low');
-  const checkItems = ref([])
-  const isPriority = ref(false)
-  const itemsList2 = ref([
-    {
-      'id': 101,
-      'name': '10 botextlillos',
-    },
+<script setup>
+import { ref } from "vue";
+//modelo 
+const header = ref('App lista de Compras');
+// ---Items---
+const items = ref([
+    {id:'0', label: '10 bolillos'}, 
+    {id:'1', label: '1 lata de volt'}, 
+    {id:'2', label: '1 bote de café'},
+    {id:'3', label: '10 chetos'}
+]);
+//Item-Method
+const saveItem = () => {
+    //Agregamos otro item
+    items.value.push({id: items.value.length + 1, label: newItem.value});
+    //queda vacia la caja de texto
+    newItem.value = '';
+    
+}
+// --- Formulario ---
+const newItem = ref(''); 
+const newItemHighPriority = ref(false);
+const editing = ref(true);
+const activareEdition = (activate) => {
+    editing.value = activate;
+}
+</script>
 
-    {
-      'id': 102,
-      'name': '1 lata volt',
-    },
-    {
-      'id': 103,
-      'name': '1 bote de cafe',
-    },
 
-    {
-      'id': 104,
-      'name': 'chetos flaming hot',
-    }
-  ])
-  </script>
+<template>
 
-  <template>
-    <h1>
-      <i class="material-icons shopping-cart-icon">local_mall</i>
-      {{ header }}
-    </h1>
-    <form v-on:submit.prevent="itemsList2.push({'id': itemsList2.length+1, 'name':newItem})">
-    <input v-model.lazy="newItem" type="text" placeholder="Agregar articulo"> 
-    <button>Agregar</button>
+<div class="header">
+<h1>
+    <i class="material-icons shopping-cart-icon"
+    >local_mall</i>
+    {{ header }} <span style="color: blueviolet;"> {{ newItemHighPriority }} </span> 
+</h1>
+
+<button v-if="editing" class="btn" @click="activareEdition(false)">Cancelar</button>
+<button v-else class="btn btn-primary" @click="activareEdition(true)">Agregar articulo</button>
+</div>
+
+
+<!-- Agrupando en un div las entradas -->
+<form class="add-item form" 
+v-if="editing"
+v-on:submit.prevent="saveItem">
+    
+    <!-- entrada de texto -->
+    <input
+      v-model.trim="newItem"
+      type="text"
+      placeholder="Add Item">
+    
+    <!-- Caja de seleccion de prioridad -->
+    <label>
+      <input type="checkbox" v-model="newItemHighPriority" />
+      Alta prioridad
+    </label>
+
+    <!-- Boton -->
+    <button class="btn btn-primary"> Guardar </button>
   
-    <!-- Radio buttons---->
-      <label>High<input type="radio" value="high" v v-model="newItemPriority"></label>
-      <label>Low<input type="radio" value="low" v-model="newItemPriority"></label>
-      {{ newItemPriority == 'high' ? '🔥': '🧊' }}
-      <label for="">Pioridad: <input type="checkbox" v-model="isPriority"></label> {{ isPriority }}
-      <div>
-        <h3>Selecciona multiples helados</h3>
-        <label>
-          Chocolate
-          <input type="checkbox" value="chocolate" v-model="checkItems">
-        </label>
-        <label>
-          Valnilla
-          <input type="checkbox" value="Valnilla" v-model="checkItems">
-        </label>
-        <label>
-          Limon
-          <input type="checkbox" value="Limon" v-model="checkItems">
-        </label>
-        <h4>Valores {{ checkItems }}</h4>
-      </div>
-      
+</form>
+    <!-- Lista de items -->
     <ul>
-      <li v-for="({id, name}, i) in itemsList2" :key="id">{{i + 1}} {{name}}</li>
+        <li v-for="({id,label}, i) in items" :key="id"> {{ i+1 }} {{i%2==0?'🔥':'🛍️'}} {{label}} </li>
     </ul>
-  </form>
-  </template>
-  <style scoped>
-  .shopping-cart-icon {
+    <p v-if="items.length === 0">😵 NO HAY ELEMENTOS EN LA LISTA</p>
+</template>
+
+<style scoped>
+.shopping-cart-icon{
     font-size: 2rem;
-  }
-  </style>
+}
+</style>
