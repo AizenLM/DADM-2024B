@@ -24,6 +24,10 @@ const editing = ref(true);
 const activareEdition = (activate) => {
     editing.value = activate;
 }
+const goGoogle = () =>{
+  if(!newItem.value.length == 0) return `htpps://${newItem.value}`
+  return 'https://google.com'
+}
 </script>
 
 
@@ -45,8 +49,12 @@ const activareEdition = (activate) => {
 <form class="add-item form" 
 v-if="editing"
 v-on:submit.prevent="saveItem">
-    
-    <!-- entrada de texto -->
+<a :href="newItem.length == 0 ? 'https://google.com' : 'https://' + newItem">
+  {{ newItem === '' ? '% LINK' : newItem }}
+</a>
+<h4>con metodo</h4>
+<a :href=goGoogle()>{{ newItem === '' ? '% LINK' : newItem }}</a>
+
     <input
       v-model.trim="newItem"
       type="text"
